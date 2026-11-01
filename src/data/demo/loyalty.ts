@@ -9,7 +9,7 @@ export const demoTiers: LoyaltyTier[] = [
     id: "guest",
     name: "Guest",
     threshold: 0,
-    bonusRate: 3,
+    multiplier: 1,
     summary: "Знакомство с экосистемой. Уровень открывается с первого визита.",
     privileges: [
       "Баллы за визиты во всех направлениях",
@@ -21,7 +21,7 @@ export const demoTiers: LoyaltyTier[] = [
     id: "insider",
     name: "Insider",
     threshold: 1500,
-    bonusRate: 5,
+    multiplier: 1.25,
     summary: "Для тех, кто уже открыл несколько направлений PARMESUN.",
     privileges: [
       "Повышенное начисление баллов",
@@ -34,7 +34,7 @@ export const demoTiers: LoyaltyTier[] = [
     id: "circle",
     name: "Circle",
     threshold: 5000,
-    bonusRate: 8,
+    multiplier: 1.5,
     summary: "Ближний круг PARMESUN — личный подход и закрытые события.",
     privileges: [
       "Максимальное начисление баллов",

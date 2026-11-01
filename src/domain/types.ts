@@ -32,8 +32,8 @@ export interface LoyaltyTier {
   name: string;
   /** Lifetime earned points needed to reach this tier */
   threshold: number;
-  /** Share of each visit returned as points, in percent */
-  bonusRate: number;
+  /** Multiplier applied to base visit points */
+  multiplier: number;
   summary: string;
   privileges: string[];
 }
