@@ -31,7 +31,7 @@ export function TierCard({ tier, index, highlighted, current }: Props) {
       <h3 className="mt-8 text-6xl">{tier.name}</h3>
       <p className={cn("mt-3 text-sm", highlighted ? "text-ivory/70" : "text-muted-foreground")}>
         {tier.threshold === 0 ? "С первого визита" : `от ${formatNumber(tier.threshold)} баллов`} ·{" "}
-        {tier.bonusRate}% баллами
+        ×{tier.multiplier.toLocaleString("ru-RU")} к баллам
       </p>
       <p className={cn("mt-6 leading-relaxed", highlighted ? "text-ivory/85" : "text-foreground/80")}>
         {tier.summary}

@@ -1,31 +1,51 @@
 /**
- * Product modules registry. "live" modules appear in navigation;
- * "planned" ones are reserved for upcoming stages so new sections plug in
+ * Product modules registry. Navigation for each interface mode is derived from here.
+ * "planned" modules are reserved for upcoming stages so new sections plug in
  * without reworking the layout.
  */
+export type AppPath =
+  | "/"
+  | "/ecosystem"
+  | "/circle"
+  | "/concierge"
+  | "/dashboard"
+  | "/business"
+  | "/business/journey"
+  | "/business/clients";
+
+export type InterfaceMode = "client" | "business";
+
 export interface ProductModule {
   id: string;
   label: string;
-  to?: "/" | "/ecosystem" | "/circle" | "/dashboard";
+  to?: AppPath;
   status: "live" | "planned";
-  audience: "client" | "team";
+  mode: InterfaceMode;
 }
 
 export const productModules: ProductModule[] = [
-  { id: "home", label: "PARMESUN ONE", to: "/", status: "live", audience: "client" },
-  { id: "ecosystem", label: "Экосистема", to: "/ecosystem", status: "live", audience: "client" },
-  { id: "circle", label: "Circle", to: "/circle", status: "live", audience: "client" },
-  { id: "dashboard", label: "Личный кабинет", to: "/dashboard", status: "live", audience: "client" },
-  { id: "concierge", label: "AI Concierge", status: "planned", audience: "client" },
-  { id: "journey", label: "Customer Journey", status: "planned", audience: "team" },
-  { id: "analytics", label: "Бизнес-аналитика", status: "planned", audience: "team" },
-  { id: "segments", label: "Сегментация клиентов", status: "planned", audience: "team" },
-  { id: "campaigns", label: "Управление кампаниями", status: "planned", audience: "team" },
+  { id: "ecosystem", label: "Экосистема", to: "/ecosystem", status: "live", mode: "client" },
+  { id: "circle", label: "Circle", to: "/circle", status: "live", mode: "client" },
+  { id: "concierge", label: "AI Консьерж", to: "/concierge", status: "live", mode: "client" },
+  { id: "dashboard", label: "Кабинет", to: "/dashboard", status: "live", mode: "client" },
+  { id: "overview", label: "Обзор", to: "/business", status: "live", mode: "business" },
+  { id: "journey", label: "Customer Journey", to: "/business/journey", status: "live", mode: "business" },
+  { id: "clients", label: "Клиенты", to: "/business/clients", status: "live", mode: "business" },
+  { id: "segments", label: "Сегменты", status: "planned", mode: "business" },
+  { id: "campaigns", label: "Кампании", status: "planned", mode: "business" },
 ];
 
-export const mainNav = productModules.filter(
-  (m): m is ProductModule & { to: NonNullable<ProductModule["to"]> } =>
-    m.status === "live" && m.audience === "client" && !!m.to && m.id !== "home",
-);
+type LiveModule = ProductModule & { to: AppPath };
 
+export const navFor = (mode: InterfaceMode): LiveModule[] =>
+  productModules.filter((m): m is LiveModule => m.status === "live" && m.mode === mode && !!m.to);
+
+export const plannedFor = (mode: InterfaceMode) =>
+  productModules.filter((m) => m.status === "planned" && m.mode === mode);
+
+/** Backwards-compatible client navigation */
+export const mainNav = navFor("client");
 export const plannedModules = productModules.filter((m) => m.status === "planned");
+
+export const modeFromPath = (pathname: string): InterfaceMode =>
+  pathname.startsWith("/business") ? "business" : "client";
