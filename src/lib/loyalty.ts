@@ -4,6 +4,7 @@ import type { LoyaltyTier } from "@/domain/types";
 export function tierForPoints(points: number, tiers: LoyaltyTier[]): LoyaltyTier {
   const sorted = [...tiers].sort((a, b) => a.threshold - b.threshold);
   let current = sorted[0];
+  if (!current) throw new Error("No loyalty tiers configured");
   for (const tier of sorted) if (points >= tier.threshold) current = tier;
   return current;
 }

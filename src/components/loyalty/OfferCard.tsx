@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   offer: Offer;
-  direction?: Direction;
-  requiredTier?: LoyaltyTier;
+  direction?: Direction | undefined;
+  requiredTier?: LoyaltyTier | undefined;
   locked?: boolean;
   activated?: boolean;
   onActivate?: () => void;

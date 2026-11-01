@@ -13,7 +13,7 @@ export function TierProgress({
   tone?: "light" | "dark";
 }) {
   const sorted = [...tiers].sort((a, b) => a.threshold - b.threshold);
-  const max = sorted[sorted.length - 1].threshold * 1.2;
+  const max = (sorted.at(-1)?.threshold ?? 1) * 1.2;
   const pct = Math.min(100, (points / max) * 100);
 
   return (
