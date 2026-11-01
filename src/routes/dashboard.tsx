@@ -56,12 +56,10 @@ function DashboardPage() {
     .reduce((s, v) => s + v.points, 0);
 
   function toggleOffer(id: string, title: string) {
-    setActivated((list) => {
-      const on = list.includes(id);
-      toast[on ? "info" : "success"](on ? "Предложение отменено" : "Предложение активировано", {
-        description: `${title}. Демо-режим: изменения не сохраняются.`,
-      });
-      return on ? list.filter((x) => x !== id) : [...list, id];
+    const on = activated.includes(id);
+    setActivated((list) => (on ? list.filter((x) => x !== id) : [...list, id]));
+    toast[on ? "info" : "success"](on ? "Предложение отменено" : "Предложение активировано", {
+      description: `${title}. Демо-режим: изменения не сохраняются.`,
     });
   }
 
@@ -198,7 +196,7 @@ function DashboardPage() {
           </p>
           <div className="mt-8 grid grid-cols-2 gap-3">
             {recommendations.slice(0, 4).map((d) => (
-              <DirectionCard key={d.slug} direction={d} />
+              <DirectionCard key={d.slug} direction={d} compact />
             ))}
           </div>
         </div>
