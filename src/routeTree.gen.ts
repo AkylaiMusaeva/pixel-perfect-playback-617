@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EcosystemIndexRouteImport } from './routes/ecosystem.index'
+import { Route as EcosystemSlugRouteImport } from './routes/ecosystem.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EcosystemIndexRoute = EcosystemIndexRouteImport.update({
+  id: '/ecosystem/',
+  path: '/ecosystem/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcosystemSlugRoute = EcosystemSlugRouteImport.update({
+  id: '/ecosystem/$slug',
+  path: '/ecosystem/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ecosystem/$slug': typeof EcosystemSlugRoute
+  '/ecosystem/': typeof EcosystemIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ecosystem/$slug': typeof EcosystemSlugRoute
+  '/ecosystem': typeof EcosystemIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ecosystem/$slug': typeof EcosystemSlugRoute
+  '/ecosystem/': typeof EcosystemIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/ecosystem/$slug' | '/ecosystem/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/ecosystem/$slug' | '/ecosystem'
+  id: '__root__' | '/' | '/ecosystem/$slug' | '/ecosystem/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EcosystemSlugRoute: typeof EcosystemSlugRoute
+  EcosystemIndexRoute: typeof EcosystemIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ecosystem/': {
+      id: '/ecosystem/'
+      path: '/ecosystem'
+      fullPath: '/ecosystem/'
+      preLoaderRoute: typeof EcosystemIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecosystem/$slug': {
+      id: '/ecosystem/$slug'
+      path: '/ecosystem/$slug'
+      fullPath: '/ecosystem/$slug'
+      preLoaderRoute: typeof EcosystemSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EcosystemSlugRoute: EcosystemSlugRoute,
+  EcosystemIndexRoute: EcosystemIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
