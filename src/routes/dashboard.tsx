@@ -116,7 +116,7 @@ function DashboardPage() {
           <p className="eyebrow text-accent">Баланс</p>
           <p className="mt-4 font-display text-7xl tabular-nums">{formatNumber(customer.points)}</p>
           <p className="mt-1 text-sm text-muted-foreground">баллов доступно</p>
-          <dl className="mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6 text-sm">
+          <dl className="mb-8 mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6 text-sm">
             <div>
               <dt className="text-muted-foreground">За октябрь</dt>
               <dd className="mt-1 font-display text-3xl">+{formatNumber(monthPoints)}</dd>

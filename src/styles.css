@@ -181,6 +181,14 @@
     line-height: 1.02;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-feature-settings: "lnum" 1;
+  }
+
   ::selection {
     background: var(--cream);
     color: var(--espresso);

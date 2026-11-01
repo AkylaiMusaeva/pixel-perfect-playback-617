@@ -47,7 +47,7 @@ export function TierProgress({
           />
         ))}
       </div>
-      <div className="relative mt-4 h-8 text-xs">
+      <div className="relative mb-4 mt-4 h-9 text-xs">
         {sorted.map((t, i) => (
           <div
             key={t.id}
