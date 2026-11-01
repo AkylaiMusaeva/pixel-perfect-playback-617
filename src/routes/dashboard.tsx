@@ -89,7 +89,7 @@ function DashboardPage() {
 
       {/* Tier + balance */}
       <section className="mt-12 grid gap-4 lg:grid-cols-3">
-        <div className="bg-espresso p-8 text-ivory md:p-10 lg:col-span-2">
+        <div className="min-w-0 bg-espresso p-6 text-ivory sm:p-8 md:p-10 lg:col-span-2">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="eyebrow text-sage">Уровень Circle</p>
@@ -112,7 +112,7 @@ function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex flex-col border border-border bg-card p-8 md:p-10">
+        <div className="flex min-w-0 flex-col border border-border bg-card p-6 sm:p-8 md:p-10">
           <p className="eyebrow text-accent">Баланс</p>
           <p className="mt-4 font-display text-7xl tabular-nums">{formatNumber(customer.points)}</p>
           <p className="mt-1 text-sm text-muted-foreground">баллов доступно</p>

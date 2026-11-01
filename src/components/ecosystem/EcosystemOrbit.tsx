@@ -26,10 +26,10 @@ export function EcosystemOrbit({ directions }: { directions: Direction[] }) {
             style={{ left: `${left}%`, top: `${top}%` }}
             className="group absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
           >
-            <span className="block size-16 overflow-hidden rounded-full border-2 border-background shadow-soft ring-1 ring-foreground/10 transition-transform duration-500 group-hover:scale-110 md:size-20">
+            <span className="block size-14 overflow-hidden sm:size-16 rounded-full border-2 border-background shadow-soft ring-1 ring-foreground/10 transition-transform duration-500 group-hover:scale-110 md:size-20">
               <img src={d.image} alt="" loading="lazy" className="h-full w-full object-cover" />
             </span>
-            <span className="whitespace-nowrap rounded-full bg-background/90 px-2.5 py-0.5 text-[0.7rem] font-medium md:text-xs">
+            <span className="max-w-[6.5rem] rounded-xl bg-background/90 px-2 py-0.5 text-center text-[0.65rem] font-medium leading-tight sm:max-w-none sm:whitespace-nowrap sm:rounded-full sm:px-2.5 md:text-xs">
               {d.titleRu}
             </span>
           </Link>
