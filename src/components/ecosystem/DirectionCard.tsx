@@ -34,7 +34,7 @@ export function DirectionCard({ direction, index, className, compact }: Props) {
           <h3 className={compact ? "text-xl md:text-2xl" : "text-3xl md:text-4xl"}>{direction.title}</h3>
           <p className={cn("mt-1 text-on-photo/80", compact ? "text-xs" : "text-sm")}>{direction.titleRu}</p>
         </div>
-        <span className={cn(compact && "hidden", "flex size-11 shrink-0 items-center justify-center rounded-full border border-on-photo/50 transition-all group-hover:bg-on-photo group-hover:text-espresso")}>
+        <span className={cn("flex size-11 shrink-0 items-center justify-center rounded-full border border-on-photo/50 transition-all group-hover:bg-on-photo group-hover:text-espresso", compact && "hidden")}>
           <ArrowUpRight className="size-4" />
         </span>
       </div>
