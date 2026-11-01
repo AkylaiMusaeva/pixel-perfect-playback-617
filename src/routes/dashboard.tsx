@@ -48,10 +48,11 @@ function DashboardPage() {
   const tier = tierForPoints(customer.points, tiers);
   const next = nextTier(customer.points, tiers);
   const rank = tierRank(tier.id, tiers);
-  const visited = new Set(customer.visits.map((v) => v.direction));
+  const visits = customer.interactions.filter((i) => i.kind === "visit");
+  const visited = new Set(visits.map((v) => v.direction));
   const recommendations = directions.filter((d) => !visited.has(d.slug));
   const dirBySlug = Object.fromEntries(directions.map((d) => [d.slug, d]));
-  const monthPoints = customer.visits
+  const monthPoints = visits
     .filter((v) => v.date.startsWith("2026-10"))
     .reduce((s, v) => s + v.points, 0);
 
@@ -95,7 +96,7 @@ function DashboardPage() {
               <p className="eyebrow text-sage">Уровень Circle</p>
               <p className="mt-4 font-display text-7xl">{tier.name}</p>
               <p className="mt-2 text-sm text-ivory/70">
-                {tier.bonusRate}% баллами с каждого визита · уровень {rank + 1} из {tiers.length}
+                ×{tier.multiplier.toLocaleString("ru-RU")} к баллам за визит · уровень {rank + 1} из {tiers.length}
               </p>
             </div>
             <Button asChild variant="hero-outline" size="sm">
@@ -170,7 +171,7 @@ function DashboardPage() {
         <div className="lg:col-span-7">
           <h2 className="text-4xl md:text-5xl">История посещений</h2>
           <ul className="mt-8 divide-y divide-border border-y border-border">
-            {customer.visits.map((v) => (
+            {customer.interactions.map((v) => (
               <li key={v.id} className="grid grid-cols-[5.5rem_1fr_auto] items-center gap-4 py-4 text-sm">
                 <span className="text-muted-foreground">{formatDate(v.date)}</span>
                 <div>
@@ -207,7 +208,7 @@ function DashboardPage() {
         <p className="eyebrow text-muted-foreground">Скоро в PARMESUN ONE</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {plannedModules
-            .filter((m) => m.audience === "client")
+            .filter((m) => m.mode === "client")
             .map((m) => (
               <span key={m.id} className="rounded-full border border-dashed border-border px-4 py-2 text-sm text-muted-foreground">
                 {m.label}

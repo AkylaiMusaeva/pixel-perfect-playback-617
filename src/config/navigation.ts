@@ -3,15 +3,8 @@
  * "planned" modules are reserved for upcoming stages so new sections plug in
  * without reworking the layout.
  */
-export type AppPath =
-  | "/"
-  | "/ecosystem"
-  | "/circle"
-  | "/concierge"
-  | "/dashboard"
-  | "/business"
-  | "/business/journey"
-  | "/business/clients";
+/** Only paths that have a route file. Add new paths here together with their route. */
+export type AppPath = "/" | "/ecosystem" | "/circle" | "/dashboard";
 
 export type InterfaceMode = "client" | "business";
 
@@ -26,11 +19,11 @@ export interface ProductModule {
 export const productModules: ProductModule[] = [
   { id: "ecosystem", label: "Экосистема", to: "/ecosystem", status: "live", mode: "client" },
   { id: "circle", label: "Circle", to: "/circle", status: "live", mode: "client" },
-  { id: "concierge", label: "AI Консьерж", to: "/concierge", status: "live", mode: "client" },
+  { id: "concierge", label: "AI Консьерж", status: "planned", mode: "client" },
   { id: "dashboard", label: "Кабинет", to: "/dashboard", status: "live", mode: "client" },
-  { id: "overview", label: "Обзор", to: "/business", status: "live", mode: "business" },
-  { id: "journey", label: "Customer Journey", to: "/business/journey", status: "live", mode: "business" },
-  { id: "clients", label: "Клиенты", to: "/business/clients", status: "live", mode: "business" },
+  { id: "overview", label: "Обзор", status: "planned", mode: "business" },
+  { id: "journey", label: "Customer Journey", status: "planned", mode: "business" },
+  { id: "clients", label: "Клиенты", status: "planned", mode: "business" },
   { id: "segments", label: "Сегменты", status: "planned", mode: "business" },
   { id: "campaigns", label: "Кампании", status: "planned", mode: "business" },
 ];
