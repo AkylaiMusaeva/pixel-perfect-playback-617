@@ -2,7 +2,7 @@
  * DEMO DATA — illustrative loyalty programme parameters.
  * Thresholds and rates are placeholders until the business sets real rules.
  */
-import type { LoyaltyTier, Offer } from "@/domain/types";
+import type { LoyaltyTier, Offer, Reward } from "@/domain/types";
 
 export const demoTiers: LoyaltyTier[] = [
   {
@@ -60,7 +60,7 @@ export const demoOffers: Offer[] = [
     id: "of-2",
     direction: "events",
     title: "Двойные баллы на ноябрьский гастро-ужин",
-    description: "Сет из шести подач с трюфелем и выдержанным пармезаном. 21 ноября, 19:00.",
+    description: "Сет из шести подач с сезонными овощами, дичью и десертом из груши. 21 ноября, 19:00.",
     validUntil: "2026-11-21",
     minTier: "insider",
     reason: "Любите вечерние форматы",
@@ -85,10 +85,69 @@ export const demoOffers: Offer[] = [
   {
     id: "of-5",
     direction: "partnerships",
-    title: "Ужин с сыроварней «Ала-Тоо»",
-    description: "Закрытый ужин с производителем: 12 гостей, пять сыров и истории их выдержки.",
+    title: "Ужин на ферме «Ала-Тоо»",
+    description: "Закрытый ужин у партнёров-фермеров: 12 гостей, урожай сезона и разговор с теми, кто его вырастил.",
     validUntil: "2026-12-05",
     minTier: "circle",
     reason: "Только для уровня Circle",
+  },
+];
+
+export const demoRewards: Reward[] = [
+  {
+    id: "rw-1",
+    direction: "coffee",
+    title: "Любой напиток в кофейне",
+    description: "Спешелти-кофе, чай или сезонный напиток на ваш выбор.",
+    cost: 200,
+    minTier: "guest",
+  },
+  {
+    id: "rw-2",
+    direction: "coffee",
+    title: "Десерт от шеф-кондитера",
+    description: "Сезонный десерт к кофе — груша, ягоды или шоколад.",
+    cost: 400,
+    minTier: "guest",
+  },
+  {
+    id: "rw-3",
+    direction: "workshops",
+    title: "Место на мастер-классе",
+    description: "Любой открытый мастер-класс по пасте, соусам или десертам.",
+    cost: 1500,
+    minTier: "guest",
+  },
+  {
+    id: "rw-4",
+    direction: "events",
+    title: "Пейринг к гастро-ужину",
+    description: "Авторские напитки к каждой подаче сета от команды бара.",
+    cost: 900,
+    minTier: "insider",
+  },
+  {
+    id: "rw-5",
+    direction: "catering",
+    title: "−15% на кейтеринг",
+    description: "Скидка на домашний приём или деловую встречу до 30 гостей.",
+    cost: 2000,
+    minTier: "insider",
+  },
+  {
+    id: "rw-6",
+    direction: "education",
+    title: "Лекция «Культура гостеприимства»",
+    description: "Вечерняя лекция с ведущими сервиса PARMESUN.",
+    cost: 700,
+    minTier: "guest",
+  },
+  {
+    id: "rw-7",
+    direction: "events",
+    title: "Стол шефа на двоих",
+    description: "Ужин за кухонной стойкой с персональными подачами от шефа.",
+    cost: 4000,
+    minTier: "circle",
   },
 ];

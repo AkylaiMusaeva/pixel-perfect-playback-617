@@ -24,6 +24,6 @@ export const demoCustomer: Customer = {
     { id: "i-4", date: "2026-09-20", direction: "events", kind: "visit", title: "Частный ужин на день рождения", points: 900 },
     { id: "i-3", date: "2026-09-12", direction: "events", kind: "request", title: "Заявка: частный ужин на 12 гостей", points: 0 },
     { id: "i-2", date: "2026-09-08", direction: "coffee", kind: "visit", title: "Капучино на вынос", points: 40 },
-    { id: "i-1", date: "2025-03-14", direction: "coffee", kind: "visit", title: "Первый визит в PARMESUN", points: 1210 },
+    { id: "i-1", date: "2025-03-14", direction: "coffee", kind: "visit", title: "Итог визитов: март 2025 — август 2026", points: 1210 },
   ],
 };
