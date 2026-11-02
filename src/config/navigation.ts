@@ -9,10 +9,7 @@ export type AppPath =
   | "/ecosystem"
   | "/circle"
   | "/concierge"
-  | "/dashboard"
-  | "/business"
-  | "/business/journey"
-  | "/business/clients";
+  | "/dashboard";
 
 export type InterfaceMode = "client" | "business";
 
@@ -29,9 +26,9 @@ export const productModules: ProductModule[] = [
   { id: "circle", label: "Circle", to: "/circle", status: "live", mode: "client" },
   { id: "concierge", label: "AI Консьерж", to: "/concierge", status: "live", mode: "client" },
   { id: "dashboard", label: "Кабинет", to: "/dashboard", status: "live", mode: "client" },
-  { id: "overview", label: "Обзор", to: "/business", status: "live", mode: "business" },
-  { id: "journey", label: "Customer Journey", to: "/business/journey", status: "live", mode: "business" },
-  { id: "clients", label: "Клиенты", to: "/business/clients", status: "live", mode: "business" },
+  { id: "overview", label: "Обзор", status: "planned", mode: "business" },
+  { id: "journey", label: "Customer Journey", status: "planned", mode: "business" },
+  { id: "clients", label: "Клиенты", status: "planned", mode: "business" },
   { id: "segments", label: "Сегменты", status: "planned", mode: "business" },
   { id: "campaigns", label: "Кампании", status: "planned", mode: "business" },
 ];
@@ -52,4 +49,4 @@ export const modeFromPath = (pathname: string): InterfaceMode =>
   pathname.startsWith("/business") ? "business" : "client";
 
 /** Where the interface switch leads for each mode */
-export const modeHome: Record<InterfaceMode, AppPath> = { client: "/dashboard", business: "/business" };
+export const modeHome: Partial<Record<InterfaceMode, AppPath>> = { client: "/dashboard" };

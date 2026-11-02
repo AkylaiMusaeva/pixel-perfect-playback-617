@@ -15,20 +15,22 @@ export function ModeSwitch({ className, onNavigate }: { className?: string; onNa
       aria-label="Интерфейс"
       className={cn("inline-flex rounded-full border border-foreground/20 bg-card p-1", className)}
     >
-      {(Object.keys(labels) as InterfaceMode[]).map((m) => (
-        <Link
-          key={m}
-          to={modeHome[m]}
-          onClick={onNavigate}
-          aria-pressed={mode === m}
-          className={cn(
-            "rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] transition-colors",
-            mode === m ? "bg-espresso text-ivory" : "text-muted-foreground hover:text-foreground",
-          )}
-        >
-          {labels[m]}
-        </Link>
-      ))}
+      {(Object.keys(labels) as InterfaceMode[]).map((m) => {
+        const to = modeHome[m];
+        const cls = cn(
+          "rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] transition-colors",
+          mode === m ? "bg-espresso text-ivory" : "text-muted-foreground hover:text-foreground",
+        );
+        return to ? (
+          <Link key={m} to={to} onClick={onNavigate} aria-pressed={mode === m} className={cls}>
+            {labels[m]}
+          </Link>
+        ) : (
+          <span key={m} className={cn(cls, "cursor-not-allowed opacity-60")} title="Скоро">
+            {labels[m]} · скоро
+          </span>
+        );
+      })}
     </div>
   );
 }
