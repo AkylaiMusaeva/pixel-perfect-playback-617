@@ -5,7 +5,7 @@
  * In production these actions become server mutations with the same shapes.
  */
 import { useSyncExternalStore } from "react";
-import type { DirectionSlug, Interaction, InteractionKind, LoyaltyTier, Reward } from "@/domain/types";
+import type { ClientRecord, DirectionSlug, Interaction, InteractionKind, LoyaltyTier, Reward } from "@/domain/types";
 import { demoCustomer } from "@/data/demo/customer";
 import { demoTiers } from "@/data/demo/loyalty";
 import { demoDirections } from "@/data/demo/directions";
@@ -134,4 +134,20 @@ export const session = {
 
 export function useSession(): SessionState {
   return useSyncExternalStore(session.subscribe, session.get, session.getServer);
+}
+
+export const DEMO_TODAY = TODAY;
+
+/** The demo guest as seen by the business interface — so guest actions show up for the team. */
+export function sessionAsClient(s: SessionState): ClientRecord {
+  return {
+    id: demoCustomer.id,
+    name: `${demoCustomer.firstName} ${demoCustomer.lastName.charAt(0)}.`,
+    city: "Бишкек",
+    joined: demoCustomer.memberSince,
+    earned: s.earned,
+    points: s.points,
+    interactions: [...s.interactions].sort((a, b) => a.date.localeCompare(b.date)),
+    consent: true,
+  };
 }

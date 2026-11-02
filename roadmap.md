@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Remove all cheese imagery and copy (brand unrelated to cheese)
+- [x] Remove all cheese imagery and copy (brand unrelated to cheese)
 - [ ] Client dashboard with filterable interaction history, "my journey", visit simulation
 - [ ] Interactive PARMESUN Circle: live balance, rewards redemption, tier upgrades
 - [ ] AI Concierge with scripted demo scenarios (no external AI)

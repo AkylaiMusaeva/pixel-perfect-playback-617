@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CircleRouteImport } from './routes/circle'
+import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as EcosystemIndexRouteImport } from './routes/ecosystem.index'
 import { Route as EcosystemSlugRouteImport } from './routes/ecosystem.$slug'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const CircleRoute = CircleRouteImport.update({
   id: '/circle',
   path: '/circle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConciergeRoute = ConciergeRouteImport.update({
+  id: '/concierge',
+  path: '/concierge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -44,6 +50,7 @@ const EcosystemSlugRoute = EcosystemSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/circle': typeof CircleRoute
+  '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
   '/ecosystem/': typeof EcosystemIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/circle': typeof CircleRoute
+  '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
   '/ecosystem': typeof EcosystemIndexRoute
@@ -59,19 +67,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/circle': typeof CircleRoute
+  '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
   '/ecosystem/': typeof EcosystemIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/circle' | '/dashboard' | '/ecosystem/$slug' | '/ecosystem/'
+  fullPaths:
+    | '/'
+    | '/circle'
+    | '/concierge'
+    | '/dashboard'
+    | '/ecosystem/$slug'
+    | '/ecosystem/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/circle' | '/dashboard' | '/ecosystem/$slug' | '/ecosystem'
+  to:
+    | '/'
+    | '/circle'
+    | '/concierge'
+    | '/dashboard'
+    | '/ecosystem/$slug'
+    | '/ecosystem'
   id:
     | '__root__'
     | '/'
     | '/circle'
+    | '/concierge'
     | '/dashboard'
     | '/ecosystem/$slug'
     | '/ecosystem/'
@@ -80,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CircleRoute: typeof CircleRoute
+  ConciergeRoute: typeof ConciergeRoute
   DashboardRoute: typeof DashboardRoute
   EcosystemSlugRoute: typeof EcosystemSlugRoute
   EcosystemIndexRoute: typeof EcosystemIndexRoute
@@ -99,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/circle'
       fullPath: '/circle'
       preLoaderRoute: typeof CircleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concierge': {
+      id: '/concierge'
+      path: '/concierge'
+      fullPath: '/concierge'
+      preLoaderRoute: typeof ConciergeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -128,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CircleRoute: CircleRoute,
+  ConciergeRoute: ConciergeRoute,
   DashboardRoute: DashboardRoute,
   EcosystemSlugRoute: EcosystemSlugRoute,
   EcosystemIndexRoute: EcosystemIndexRoute,
