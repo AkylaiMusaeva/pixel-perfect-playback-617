@@ -2,12 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
 import circleImg from "@/assets/circle-still.jpg";
-import { directionsQuery, offersQuery, tiersQuery } from "@/services/queries";
+import { directionsQuery, offersQuery, rewardsQuery, tiersQuery } from "@/services/queries";
+import { tierForPoints } from "@/lib/loyalty";
+import { useSession } from "@/store/session";
 import { SectionHeading } from "@/components/brand/SectionHeading";
 import { DemoBadge, DemoNotice } from "@/components/brand/DemoBadge";
 import { TierCard } from "@/components/loyalty/TierCard";
 import { PointsCalculator } from "@/components/loyalty/PointsCalculator";
 import { OfferCard } from "@/components/loyalty/OfferCard";
+import { LiveCircleCard } from "@/components/loyalty/LiveCircleCard";
+import { RewardsCatalog } from "@/components/loyalty/RewardsCatalog";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/circle")({
@@ -16,10 +20,10 @@ export const Route = createFileRoute("/circle")({
       { title: "PARMESUN Circle — единая программа лояльности" },
       {
         name: "description",
-        content: "Три уровня Guest, Insider и Circle: баллы во всех направлениях PARMESUN и персональные привилегии.",
+        content: "Три уровня Guest, Insider и Circle: баллы во всех направлениях PARMESUN, обмен на награды и персональные привилегии.",
       },
       { property: "og:title", content: "PARMESUN Circle — единая программа лояльности" },
-      { property: "og:description", content: "Баллы во всех направлениях PARMESUN и привилегии трёх уровней." },
+      { property: "og:description", content: "Баллы во всех направлениях PARMESUN, награды и привилегии трёх уровней." },
     ],
   }),
   loader: ({ context }) =>
@@ -27,6 +31,7 @@ export const Route = createFileRoute("/circle")({
       context.queryClient.ensureQueryData(directionsQuery()),
       context.queryClient.ensureQueryData(tiersQuery()),
       context.queryClient.ensureQueryData(offersQuery()),
+      context.queryClient.ensureQueryData(rewardsQuery()),
     ]),
   component: CirclePage,
 });
@@ -41,6 +46,9 @@ function CirclePage() {
   const { data: directions } = useSuspenseQuery(directionsQuery()).data;
   const { data: tiers } = useSuspenseQuery(tiersQuery()).data;
   const { data: offers } = useSuspenseQuery(offersQuery()).data;
+  const { data: rewards } = useSuspenseQuery(rewardsQuery()).data;
+  const { earned } = useSession();
+  const currentTier = tierForPoints(earned, tiers);
 
   return (
     <>
@@ -58,19 +66,19 @@ function CirclePage() {
           />
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <a href="#calculator">
-                Рассчитать баллы <ArrowRight />
+              <a href="#status">
+                Мой статус <ArrowRight />
               </a>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link to="/dashboard">Посмотреть демо-кабинет</Link>
+              <a href="#calculator">Рассчитать баллы</a>
             </Button>
           </div>
         </div>
         <div className="md:col-span-5">
           <img
             src={circleImg}
-            alt="Паста с пармезаном и приглашение Circle"
+            alt="Десерт с грушей и чашка кофе — приглашение в Circle"
             width={1280}
             height={1600}
             className="aspect-[4/5] w-full object-cover shadow-soft"
@@ -90,6 +98,17 @@ function CirclePage() {
         </div>
       </section>
 
+      <section id="status" className="container-editorial scroll-mt-24 pt-24">
+        <SectionHeading
+          eyebrow="Интерактивно"
+          title="Ваш Circle сейчас"
+          lead="Отметьте визит или обменяйте баллы — баланс, уровень и история в кабинете обновятся сразу."
+        />
+        <div className="mt-12">
+          <LiveCircleCard directions={directions} tiers={tiers} />
+        </div>
+      </section>
+
       <section className="container-editorial py-24">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading eyebrow="Уровни" title="Три уровня близости" />
@@ -97,12 +116,26 @@ function CirclePage() {
         </div>
         <div className="mt-14 grid gap-4 lg:grid-cols-3">
           {tiers.map((t, i) => (
-            <TierCard key={t.id} tier={t} index={i} highlighted={t.id === "circle"} />
+            <TierCard key={t.id} tier={t} index={i} highlighted={t.id === "circle"} current={t.id === currentTier.id} />
           ))}
         </div>
       </section>
 
-      <section id="calculator" className="container-editorial scroll-mt-24 py-12">
+      <section id="rewards" className="container-editorial scroll-mt-24 py-12">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading
+            eyebrow="Награды"
+            title="На что потратить баллы"
+            lead="Награды доступны во всех направлениях. Часть из них открывается только на уровнях Insider и Circle."
+          />
+          <DemoBadge />
+        </div>
+        <div className="mt-12">
+          <RewardsCatalog rewards={rewards} directions={directions} tiers={tiers} />
+        </div>
+      </section>
+
+      <section id="calculator" className="container-editorial scroll-mt-24 py-24">
         <SectionHeading
           eyebrow="Накопление бонусов"
           title="Как растёт ваш баланс"
@@ -116,14 +149,16 @@ function CirclePage() {
         </div>
       </section>
 
-      <section className="container-editorial py-24">
+      <section className="container-editorial pb-12">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading
             eyebrow="Персональные предложения"
             title="Примеры приглашений"
             lead="Предложения подбираются по истории визитов: гостю кофейни — мастер-класс, гостю ужинов — организация собственного события."
           />
-          <DemoBadge />
+          <Button asChild variant="outline">
+            <Link to="/dashboard">Активировать в кабинете</Link>
+          </Button>
         </div>
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {offers.slice(0, 4).map((o) => (
