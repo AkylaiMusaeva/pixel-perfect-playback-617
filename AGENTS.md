@@ -17,3 +17,5 @@
 - Product sections are registered in `src/config/navigation.ts` (`live` vs `planned`, `client` vs `team`); navigation is derived from it — new modules (AI Concierge, analytics, segments, campaigns) plug in by adding an entry and a route.
 - Loyalty calculations are pure functions in `src/lib/loyalty.ts`, covered by `src/test/loyalty.test.ts` — business rules stay testable and UI-free.
 - Shared layout (header, footer, toaster) is in `src/routes/__root.tsx`; all styling uses tokens/utilities from `src/styles.css` and button variants in `src/components/ui/button.tsx`.
+- Business pages share browser-only demo session composition and query access in `src/components/business/useBusinessData.ts`; client activity replaces the matching demo record by ID so team views stay consistent without duplicating guests.
+- Journey aggregation and business filtering are pure functions in `src/lib/journey.ts` and `src/lib/business.ts`, with concrete regression tests; business routes share the `business.tsx` Outlet layout.

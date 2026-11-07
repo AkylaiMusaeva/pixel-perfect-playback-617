@@ -10,15 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BusinessRouteImport } from './routes/business'
 import { Route as CircleRouteImport } from './routes/circle'
 import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as BusinessIndexRouteImport } from './routes/business.index'
+import { Route as BusinessClientsRouteImport } from './routes/business.clients'
+import { Route as BusinessJourneyRouteImport } from './routes/business.journey'
 import { Route as EcosystemIndexRouteImport } from './routes/ecosystem.index'
 import { Route as EcosystemSlugRouteImport } from './routes/ecosystem.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CircleRoute = CircleRouteImport.update({
@@ -36,6 +45,21 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BusinessIndexRoute = BusinessIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BusinessRoute,
+} as any)
+const BusinessClientsRoute = BusinessClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => BusinessRoute,
+} as any)
+const BusinessJourneyRoute = BusinessJourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
+  getParentRoute: () => BusinessRoute,
+} as any)
 const EcosystemIndexRoute = EcosystemIndexRouteImport.update({
   id: '/ecosystem/',
   path: '/ecosystem/',
@@ -49,10 +73,14 @@ const EcosystemSlugRoute = EcosystemSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/business': typeof BusinessRouteWithChildren
   '/circle': typeof CircleRoute
   '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
+  '/business/clients': typeof BusinessClientsRoute
+  '/business/journey': typeof BusinessJourneyRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
+  '/business/': typeof BusinessIndexRoute
   '/ecosystem/': typeof EcosystemIndexRoute
 }
 export interface FileRoutesByTo {
@@ -60,26 +88,37 @@ export interface FileRoutesByTo {
   '/circle': typeof CircleRoute
   '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
+  '/business/clients': typeof BusinessClientsRoute
+  '/business/journey': typeof BusinessJourneyRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
+  '/business': typeof BusinessIndexRoute
   '/ecosystem': typeof EcosystemIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/business': typeof BusinessRouteWithChildren
   '/circle': typeof CircleRoute
   '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
+  '/business/clients': typeof BusinessClientsRoute
+  '/business/journey': typeof BusinessJourneyRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
+  '/business/': typeof BusinessIndexRoute
   '/ecosystem/': typeof EcosystemIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/business'
     | '/circle'
     | '/concierge'
     | '/dashboard'
+    | '/business/clients'
+    | '/business/journey'
     | '/ecosystem/$slug'
+    | '/business/'
     | '/ecosystem/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -87,20 +126,28 @@ export interface FileRouteTypes {
     | '/circle'
     | '/concierge'
     | '/dashboard'
+    | '/business/clients'
+    | '/business/journey'
     | '/ecosystem/$slug'
+    | '/business'
     | '/ecosystem'
   id:
     | '__root__'
     | '/'
+    | '/business'
     | '/circle'
     | '/concierge'
     | '/dashboard'
+    | '/business/clients'
+    | '/business/journey'
     | '/ecosystem/$slug'
+    | '/business/'
     | '/ecosystem/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BusinessRoute: typeof BusinessRouteWithChildren
   CircleRoute: typeof CircleRoute
   ConciergeRoute: typeof ConciergeRoute
   DashboardRoute: typeof DashboardRoute
@@ -115,6 +162,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/circle': {
@@ -138,6 +192,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/business/': {
+      id: '/business/'
+      path: '/'
+      fullPath: '/business/'
+      preLoaderRoute: typeof BusinessIndexRouteImport
+      parentRoute: typeof BusinessRoute
+    }
+    '/business/clients': {
+      id: '/business/clients'
+      path: '/clients'
+      fullPath: '/business/clients'
+      preLoaderRoute: typeof BusinessClientsRouteImport
+      parentRoute: typeof BusinessRoute
+    }
+    '/business/journey': {
+      id: '/business/journey'
+      path: '/journey'
+      fullPath: '/business/journey'
+      preLoaderRoute: typeof BusinessJourneyRouteImport
+      parentRoute: typeof BusinessRoute
+    }
     '/ecosystem/': {
       id: '/ecosystem/'
       path: '/ecosystem'
@@ -155,8 +230,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface BusinessRouteChildren {
+  BusinessClientsRoute: typeof BusinessClientsRoute
+  BusinessJourneyRoute: typeof BusinessJourneyRoute
+  BusinessIndexRoute: typeof BusinessIndexRoute
+}
+
+const BusinessRouteChildren: BusinessRouteChildren = {
+  BusinessClientsRoute: BusinessClientsRoute,
+  BusinessJourneyRoute: BusinessJourneyRoute,
+  BusinessIndexRoute: BusinessIndexRoute,
+}
+
+const BusinessRouteWithChildren = BusinessRoute._addFileChildren(
+  BusinessRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BusinessRoute: BusinessRouteWithChildren,
   CircleRoute: CircleRoute,
   ConciergeRoute: ConciergeRoute,
   DashboardRoute: DashboardRoute,

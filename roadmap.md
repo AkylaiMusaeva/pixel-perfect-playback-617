@@ -6,3 +6,4 @@
 - [ ] AI Concierge with scripted demo scenarios (no external AI)
 - [ ] Customer Journey with transition visualization (business)
 - [ ] Client / business interface switch; business overview + clients pages
+- [ ] Verify guest actions, team filters and mobile layouts; resolve remaining errors
