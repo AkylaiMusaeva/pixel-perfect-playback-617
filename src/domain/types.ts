@@ -135,3 +135,37 @@ export interface Sourced<T> {
   source: DataSource;
   data: T;
 }
+
+/** Business segmentation of guests (rule-based, see src/lib/analytics.ts) */
+export type SegmentId = "new" | "single" | "growing" | "explorer" | "at-risk";
+
+export type CampaignChannel = "push" | "email" | "concierge" | "circle";
+export type CampaignStatus = "draft" | "scheduled" | "test-sent" | "paused";
+
+export interface Campaign {
+  id: string;
+  name: string;
+  segment: SegmentId | "all";
+  /** Direction the audience already knows ("all" = any) */
+  fromDirection: DirectionSlug | "all";
+  /** Direction the campaign invites guests to try */
+  targetDirection: DirectionSlug;
+  channels: CampaignChannel[];
+  message: string;
+  bonusPoints: number;
+  status: CampaignStatus;
+  createdAt: string; // ISO
+  source: DataSource;
+}
+
+export interface Recommendation {
+  id: string;
+  title: string;
+  rationale: string;
+  segment: SegmentId | "all";
+  fromDirection: DirectionSlug | "all";
+  targetDirection: DirectionSlug;
+  channels: CampaignChannel[];
+  audience: number;
+  priority: "high" | "medium";
+}

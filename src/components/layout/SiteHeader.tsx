@@ -4,7 +4,7 @@ import { Menu } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { modeFromPath, navFor } from "@/config/navigation";
+import { headerNavFor, modeFromPath, navFor } from "@/config/navigation";
 import { ModeSwitch } from "./ModeSwitch";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +32,7 @@ export function SiteHeader() {
         </div>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Основная навигация">
-          {nav.map((item) => (
+          {headerNavFor(mode).map((item) => (
             <Link
               key={item.id}
               to={item.to}

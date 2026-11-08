@@ -124,6 +124,10 @@ export const session = {
     });
     return !on;
   },
+  /** Demo: a test campaign message delivered to the guest's cabinet */
+  addMessage(direction: DirectionSlug, title: string) {
+    set({ ...state, interactions: [interaction("offer", direction, title, 0), ...state.interactions] });
+  },
   clearTierUp() {
     set({ ...state, tierUp: null });
   },
