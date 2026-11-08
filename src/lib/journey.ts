@@ -84,8 +84,9 @@ export function nextBestDirection(
 /** Keep only interactions newer than `days` before `ref`; drop clients with nothing left. */
 export function withinPeriod(clients: ClientRecord[], days: number | null, ref: string): ClientRecord[] {
   if (days === null) return clients;
+  const to = new Date(ref).getTime() + 86_399_999;
   const from = new Date(ref).getTime() - days * 86_400_000;
   return clients
-    .map((c) => ({ ...c, interactions: c.interactions.filter((i) => new Date(i.date).getTime() >= from) }))
+    .map((c) => ({ ...c, interactions: c.interactions.filter((i) => { const t = new Date(i.date).getTime(); return t >= from && t <= to; }) }))
     .filter((c) => c.interactions.length > 0);
 }
