@@ -52,9 +52,10 @@ export function repeatPurchaseRate(clients: ClientRecord[]): number {
 export function retentionWithin(clients: ClientRecord[], window: number, ref: string): number {
   const eligible = clients
     .map((c) => visitsOf(c).map((v) => v.date).sort())
-    .filter((dates) => dates.length > 0 && days(dates[0]!, ref) >= window);
+    .map((dates) => dates.filter((d) => d <= ref))
+    .filter((dates) => { const first = dates[0]; return first !== undefined && days(first, ref) >= window; });
   if (!eligible.length) return 0;
-  return eligible.filter((dates) => dates.slice(1).some((d) => days(dates[0]!, d) <= window && days(dates[0]!, d) > 0)).length / eligible.length;
+  return eligible.filter((dates) => { const first = dates[0]; return first !== undefined && dates.slice(1).some((d) => days(first, d) <= window && days(first, d) > 0); }).length / eligible.length;
 }
 
 /** Cross-sell from one entry direction: of guests who started there, share who later tried each other direction. */
@@ -81,7 +82,7 @@ export function monthlySeries(clients: ClientRecord[], ref: string, months = 6) 
     const until = new Date(d.getFullYear(), d.getMonth() + 1, 1).toISOString().slice(0, 10);
     const active = clients.filter((c) => visitsOf(c).some((v) => v.date.startsWith(key))).length;
     const known = clients
-      .map((c) => ({ ...c, interactions: c.interactions.filter((i) => i.date < until) }))
+      .map((c) => ({ ...c, interactions: c.interactions.filter((i) => i.date < until && i.date <= ref) }))
       .filter((c) => c.interactions.length > 0);
     return {
       key,
@@ -115,7 +116,7 @@ export function validateCampaign(c: Pick<Campaign, "name" | "message" | "channel
   if (c.name.trim().length < 3) return "Название — минимум 3 символа";
   if (c.message.trim().length < 10) return "Сообщение — минимум 10 символов";
   if (!c.channels.length) return "Выберите хотя бы один канал";
-  if (c.bonusPoints < 0 || c.bonusPoints > 500) return "Бонус — от 0 до 500 баллов";
+  if (!Number.isFinite(c.bonusPoints) || c.bonusPoints < 0 || c.bonusPoints > 500) return "Бонус — от 0 до 500 баллов";
   if (c.fromDirection === c.targetDirection) return "Целевое направление должно отличаться от исходного";
   return null;
 }
@@ -151,8 +152,8 @@ export function recommendations(clients: ClientRecord[], directions: Direction[]
   const risk = clients.filter((c) => segmentOf(c, ref) === "at-risk" && c.consent);
   if (risk.length) {
     const target: DirectionSlug = "coffee";
-    const audience = campaignAudience(clients, { segment: "at-risk", fromDirection: "all", targetDirection: target }, ref).length || risk.length;
-    out.push({
+    const audience = campaignAudience(clients, { segment: "at-risk", fromDirection: "all", targetDirection: target }, ref).length;
+    if (audience) out.push({
       id: "reactivate-at-risk",
       title: "Вернуть гостей без активности более 60 дней",
       rationale: `${risk.length} гостей с согласием на связь давно не появлялись. Мягкое приглашение через AI Консьержа с бонусом Circle.`,
@@ -161,7 +162,8 @@ export function recommendations(clients: ClientRecord[], directions: Direction[]
     });
   }
   const fresh = clients.filter((c) => segmentOf(c, ref) === "new" && c.consent);
-  if (fresh.length) {
+  const freshAudience = campaignAudience(clients, { segment: "new", fromDirection: "all", targetDirection: "workshops" }, ref).length;
+  if (freshAudience) {
     out.push({
       id: "welcome-second-direction",
       title: "Второе направление для новых гостей",

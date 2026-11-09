@@ -12,7 +12,7 @@ export function DemoBadge({ source = "demo", className }: { source?: DataSource;
       title="Демонстрационные данные — не реальная информация"
     >
       <span className="size-1.5 rounded-full bg-demo-foreground" />
-      Демо-данные
+      DEMO · демо-данные
     </span>
   );
 }

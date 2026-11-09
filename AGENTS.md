@@ -19,3 +19,4 @@
 - Shared layout (header, footer, toaster) is in `src/routes/__root.tsx`; all styling uses tokens/utilities from `src/styles.css` and button variants in `src/components/ui/button.tsx`.
 - Business pages share browser-only demo session composition and query access in `src/components/business/useBusinessData.ts`; client activity replaces the matching demo record by ID so team views stay consistent without duplicating guests.
 - Journey aggregation and business filtering are pure functions in `src/lib/journey.ts` and `src/lib/business.ts`, with concrete regression tests; business routes share the `business.tsx` Outlet layout.
+- Business analytics use pure cohort calculations and a fixed demo reference date; test campaigns remain browser-only simulations and never imply delivery or attributed revenue.
