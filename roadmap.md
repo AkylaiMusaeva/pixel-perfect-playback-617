@@ -7,3 +7,4 @@
 - [x] Customer Journey with transition visualization (business)
 - [x] Client / business interface switch; business overview + clients pages
 - [x] Verify guest actions, team filters and mobile layouts; resolve remaining errors
+- [ ] Business dashboard: segments, Customer 360, analytics (cross-sell, multi-direction, repeat, retention), campaigns, AI recommendations — logic/store ready, pages not built

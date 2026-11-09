@@ -12,11 +12,7 @@ export type AppPath =
   | "/dashboard"
   | "/business"
   | "/business/journey"
-  | "/business/clients"
-  | "/business/segments"
-  | "/business/analytics"
-  | "/business/campaigns"
-  | "/business/recommendations";
+  | "/business/clients";
 
 export type InterfaceMode = "client" | "business";
 
@@ -38,10 +34,10 @@ export const productModules: ProductModule[] = [
   { id: "overview", label: "Обзор", to: "/business", status: "live", mode: "business" },
   { id: "journey", label: "Путь гостя", to: "/business/journey", status: "live", mode: "business" },
   { id: "clients", label: "Клиенты", to: "/business/clients", status: "live", mode: "business" },
-  { id: "segments", label: "Сегменты", to: "/business/segments", status: "live", mode: "business", secondary: true },
-  { id: "analytics", label: "Аналитика", to: "/business/analytics", status: "live", mode: "business" },
-  { id: "campaigns", label: "Кампании", to: "/business/campaigns", status: "live", mode: "business" },
-  { id: "recommendations", label: "AI Рекомендации", to: "/business/recommendations", status: "live", mode: "business", secondary: true },
+  { id: "segments", label: "Сегменты", status: "planned", mode: "business", secondary: true },
+  { id: "analytics", label: "Аналитика", status: "planned", mode: "business" },
+  { id: "campaigns", label: "Кампании", status: "planned", mode: "business" },
+  { id: "recommendations", label: "AI Рекомендации", status: "planned", mode: "business", secondary: true },
 ];
 
 type LiveModule = ProductModule & { to: AppPath };
