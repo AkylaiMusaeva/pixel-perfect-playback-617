@@ -9,7 +9,7 @@ import { routeTree } from "@/routeTree.gen";
 describe("App routing", () => {
   const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
-  it.each(["/", "/ecosystem", "/ecosystem/coffee", "/circle", "/dashboard", "/concierge", "/business", "/business/journey", "/business/clients"])(
+  it.each(["/", "/ecosystem", "/ecosystem/coffee", "/circle", "/dashboard", "/concierge", "/business", "/business/journey", "/business/clients", "/business/clients/demo-0001", "/business/segments", "/business/analytics", "/business/campaigns", "/business/recommendations"])(
     "matches a page for %s instead of falling back to not found",
     (path) => {
       expect(router.matchRoutes(path).at(-1)?.routeId).not.toBe(rootRouteId);

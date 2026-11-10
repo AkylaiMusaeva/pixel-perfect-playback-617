@@ -16,8 +16,10 @@ import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BusinessIndexRouteImport } from './routes/business.index'
 import { Route as BusinessAnalyticsRouteImport } from './routes/business.analytics'
+import { Route as BusinessCampaignsRouteImport } from './routes/business.campaigns'
 import { Route as BusinessClientsRouteImport } from './routes/business.clients'
 import { Route as BusinessJourneyRouteImport } from './routes/business.journey'
+import { Route as BusinessRecommendationsRouteImport } from './routes/business.recommendations'
 import { Route as BusinessSegmentsRouteImport } from './routes/business.segments'
 import { Route as EcosystemIndexRouteImport } from './routes/ecosystem.index'
 import { Route as EcosystemSlugRouteImport } from './routes/ecosystem.$slug'
@@ -58,6 +60,11 @@ const BusinessAnalyticsRoute = BusinessAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => BusinessRoute,
 } as any)
+const BusinessCampaignsRoute = BusinessCampaignsRouteImport.update({
+  id: '/campaigns',
+  path: '/campaigns',
+  getParentRoute: () => BusinessRoute,
+} as any)
 const BusinessClientsRoute = BusinessClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -66,6 +73,11 @@ const BusinessClientsRoute = BusinessClientsRouteImport.update({
 const BusinessJourneyRoute = BusinessJourneyRouteImport.update({
   id: '/journey',
   path: '/journey',
+  getParentRoute: () => BusinessRoute,
+} as any)
+const BusinessRecommendationsRoute = BusinessRecommendationsRouteImport.update({
+  id: '/recommendations',
+  path: '/recommendations',
   getParentRoute: () => BusinessRoute,
 } as any)
 const BusinessSegmentsRoute = BusinessSegmentsRouteImport.update({
@@ -96,8 +108,10 @@ export interface FileRoutesByFullPath {
   '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
   '/business/analytics': typeof BusinessAnalyticsRoute
+  '/business/campaigns': typeof BusinessCampaignsRoute
   '/business/clients': typeof BusinessClientsRoute
   '/business/journey': typeof BusinessJourneyRoute
+  '/business/recommendations': typeof BusinessRecommendationsRoute
   '/business/segments': typeof BusinessSegmentsRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
   '/business/': typeof BusinessIndexRoute
@@ -110,8 +124,10 @@ export interface FileRoutesByTo {
   '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
   '/business/analytics': typeof BusinessAnalyticsRoute
+  '/business/campaigns': typeof BusinessCampaignsRoute
   '/business/clients': typeof BusinessClientsRoute
   '/business/journey': typeof BusinessJourneyRoute
+  '/business/recommendations': typeof BusinessRecommendationsRoute
   '/business/segments': typeof BusinessSegmentsRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
   '/business': typeof BusinessIndexRoute
@@ -126,8 +142,10 @@ export interface FileRoutesById {
   '/concierge': typeof ConciergeRoute
   '/dashboard': typeof DashboardRoute
   '/business/analytics': typeof BusinessAnalyticsRoute
+  '/business/campaigns': typeof BusinessCampaignsRoute
   '/business/clients': typeof BusinessClientsRoute
   '/business/journey': typeof BusinessJourneyRoute
+  '/business/recommendations': typeof BusinessRecommendationsRoute
   '/business/segments': typeof BusinessSegmentsRoute
   '/ecosystem/$slug': typeof EcosystemSlugRoute
   '/business/': typeof BusinessIndexRoute
@@ -143,8 +161,10 @@ export interface FileRouteTypes {
     | '/concierge'
     | '/dashboard'
     | '/business/analytics'
+    | '/business/campaigns'
     | '/business/clients'
     | '/business/journey'
+    | '/business/recommendations'
     | '/business/segments'
     | '/ecosystem/$slug'
     | '/business/'
@@ -157,8 +177,10 @@ export interface FileRouteTypes {
     | '/concierge'
     | '/dashboard'
     | '/business/analytics'
+    | '/business/campaigns'
     | '/business/clients'
     | '/business/journey'
+    | '/business/recommendations'
     | '/business/segments'
     | '/ecosystem/$slug'
     | '/business'
@@ -172,8 +194,10 @@ export interface FileRouteTypes {
     | '/concierge'
     | '/dashboard'
     | '/business/analytics'
+    | '/business/campaigns'
     | '/business/clients'
     | '/business/journey'
+    | '/business/recommendations'
     | '/business/segments'
     | '/ecosystem/$slug'
     | '/business/'
@@ -242,6 +266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessAnalyticsRouteImport
       parentRoute: typeof BusinessRoute
     }
+    '/business/campaigns': {
+      id: '/business/campaigns'
+      path: '/campaigns'
+      fullPath: '/business/campaigns'
+      preLoaderRoute: typeof BusinessCampaignsRouteImport
+      parentRoute: typeof BusinessRoute
+    }
     '/business/clients': {
       id: '/business/clients'
       path: '/clients'
@@ -254,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/journey'
       fullPath: '/business/journey'
       preLoaderRoute: typeof BusinessJourneyRouteImport
+      parentRoute: typeof BusinessRoute
+    }
+    '/business/recommendations': {
+      id: '/business/recommendations'
+      path: '/recommendations'
+      fullPath: '/business/recommendations'
+      preLoaderRoute: typeof BusinessRecommendationsRouteImport
       parentRoute: typeof BusinessRoute
     }
     '/business/segments': {
@@ -289,8 +327,10 @@ declare module '@tanstack/react-router' {
 
 interface BusinessRouteChildren {
   BusinessAnalyticsRoute: typeof BusinessAnalyticsRoute
+  BusinessCampaignsRoute: typeof BusinessCampaignsRoute
   BusinessClientsRoute: typeof BusinessClientsRoute
   BusinessJourneyRoute: typeof BusinessJourneyRoute
+  BusinessRecommendationsRoute: typeof BusinessRecommendationsRoute
   BusinessSegmentsRoute: typeof BusinessSegmentsRoute
   BusinessIndexRoute: typeof BusinessIndexRoute
   BusinessClientsIdRoute: typeof BusinessClientsIdRoute
@@ -298,8 +338,10 @@ interface BusinessRouteChildren {
 
 const BusinessRouteChildren: BusinessRouteChildren = {
   BusinessAnalyticsRoute: BusinessAnalyticsRoute,
+  BusinessCampaignsRoute: BusinessCampaignsRoute,
   BusinessClientsRoute: BusinessClientsRoute,
   BusinessJourneyRoute: BusinessJourneyRoute,
+  BusinessRecommendationsRoute: BusinessRecommendationsRoute,
   BusinessSegmentsRoute: BusinessSegmentsRoute,
   BusinessIndexRoute: BusinessIndexRoute,
   BusinessClientsIdRoute: BusinessClientsIdRoute,

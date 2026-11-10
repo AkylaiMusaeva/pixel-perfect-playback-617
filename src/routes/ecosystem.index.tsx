@@ -16,6 +16,8 @@ export const Route = createFileRoute("/ecosystem/")({
       },
       { property: "og:title", content: "Экосистема PARMESUN — шесть направлений" },
       { property: "og:description", content: "Все направления PARMESUN на одной странице." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(directionsQuery()),

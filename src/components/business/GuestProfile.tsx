@@ -12,7 +12,7 @@ export function GuestProfile({ client, clients, directions, tiers }: { client: C
   const path = directionPath(client.interactions);
   const next = nextBestDirection(path, clients, directions.map(d => d.slug));
   const name = (s: string) => directions.find(d => d.slug === s)?.titleRu ?? s;
-  const history = client.interactions.filter(i => kind === "all" || i.kind === kind).toSorted((a,b) => b.date.localeCompare(a.date));
+  const history = client.interactions.filter(i => kind === "all" || i.kind === kind).sort((a,b) => b.date.localeCompare(a.date));
   return <div className="space-y-7"><div className="grid grid-cols-2 gap-4 border-y py-5 sm:grid-cols-4">{[
     ["Уровень Circle", tierForPoints(client.earned, tiers).name], ["Баланс баллов", formatNumber(client.points)], ["Визиты и брони", String(visitsOf(client).length)], ["Направления", `${path.length} / ${directions.length}`],
   ].map(([label,value]) => <div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-2 font-display text-3xl">{value}</p></div>)}</div>

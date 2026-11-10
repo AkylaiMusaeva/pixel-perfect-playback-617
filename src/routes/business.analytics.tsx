@@ -13,7 +13,7 @@ import type { DirectionSlug } from "@/domain/types";
 export const Route = createFileRoute("/business/analytics")({ head:()=>businessHead("Аналитика экосистемы","DEMO: повторные визиты, удержание гостей, перекрёстные переходы и использование нескольких направлений PARMESUN."), component: AnalyticsPage });
 function AnalyticsPage(){
  const {clients,directions}=useBusinessData(); const [period,setPeriod]=useState("all"); const [from,setFrom]=useState<DirectionSlug>("coffee"); const [cohort,setCohort]=useState("all"); const [window,setWindow]=useState("30");
- const cutoff = new Date(new Date(DEMO_TODAY).getTime() - Number(period)*86400000).toISOString().slice(0,10);
+ const cutoff = new Date(new Date(DEMO_TODAY).getTime() - (period === "all" ? 0 : Number(period))*86400000).toISOString().slice(0,10);
  const base=clients.map(c=>({...c,interactions:c.interactions.filter(i=>i.date<=DEMO_TODAY)})).filter(c=>(period==="all" || c.joined>=cutoff) && (cohort==="all" || directionPath(c.interactions)[0]===cohort));
  const cs=crossSell(base,from,directions.map(d=>d.slug)); const percent=(x:number)=>`${Math.round(x*100)}%`;
  const metrics=[{label:"Гости в 2+ направлениях",value:percent(multiDirectionRate(base)),note:`${base.length} гостей в выбранной когорте; визиты и брони`},{label:"Повторные визиты и брони",value:percent(repeatPurchaseRate(base)),note:"2+ визита или брони среди гостей с хотя бы одним"},{label:`Возвращаемость за ${window} дней`,value:percent(retentionWithin(base,Number(window),DEMO_TODAY)),note:"Повторный визит/бронь в другой день после первого; только зрелые когорты"}];

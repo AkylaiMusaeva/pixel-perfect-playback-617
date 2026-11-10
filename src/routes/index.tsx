@@ -19,6 +19,8 @@ export const Route = createFileRoute("/")({
           "Кофейня, мастер-классы, события, кейтеринг, обучение и партнёры PARMESUN — в одной экосистеме с программой лояльности Circle.",
       },
       { property: "og:title", content: "PARMESUN ONE — единая гастрономическая экосистема" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       {
         property: "og:description",
         content: "Все направления PARMESUN и программа лояльности Circle в одном месте.",

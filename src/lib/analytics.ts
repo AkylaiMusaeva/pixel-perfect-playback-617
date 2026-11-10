@@ -80,7 +80,7 @@ export function monthlySeries(clients: ClientRecord[], ref: string, months = 6) 
     const d = new Date(end.getFullYear(), end.getMonth() - (months - 1 - k), 1);
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     const until = new Date(d.getFullYear(), d.getMonth() + 1, 1).toISOString().slice(0, 10);
-    const active = clients.filter((c) => visitsOf(c).some((v) => v.date.startsWith(key))).length;
+    const active = clients.filter((c) => visitsOf(c).some((v) => v.date.startsWith(key) && v.date <= ref)).length;
     const known = clients
       .map((c) => ({ ...c, interactions: c.interactions.filter((i) => i.date < until && i.date <= ref) }))
       .filter((c) => c.interactions.length > 0);

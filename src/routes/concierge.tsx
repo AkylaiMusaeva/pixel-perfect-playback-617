@@ -24,6 +24,8 @@ export const Route = createFileRoute("/concierge")({
       },
       { property: "og:title", content: "AI Консьерж PARMESUN — демо" },
       { property: "og:description", content: "Консьерж подбирает впечатления во всей экосистеме PARMESUN. Демо-сценарии." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: ({ context }) =>

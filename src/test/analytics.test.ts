@@ -1,0 +1,20 @@
+import { describe, it, expect } from "vitest";
+import type { ClientRecord, DirectionSlug } from "@/domain/types";
+import { campaignAudience, crossSell, multiDirectionRate, repeatPurchaseRate, retentionWithin, segmentOf, validateCampaign, monthlySeries, recommendations } from "@/lib/analytics";
+import { demoDirections } from "@/data/demo/directions";
+const guest=(id:string, dirs:DirectionSlug[], dates:string[]=["2026-09-01","2026-09-15"]):ClientRecord=>({id,name:id,city:"Бишкек",joined:"2026-08-01",earned:100,points:100,consent:true,interactions:dirs.map((direction,i)=>({id:`${id}-${i}`,direction,date:dates[i]??"2026-10-20",kind:"visit",title:"DEMO",points:40}))});
+const ref="2026-11-01";
+describe("Demo business rules",()=>{
+ it("multi-direction rate counts concrete 2+ direction guests",()=>expect(multiDirectionRate([guest("a",["coffee","workshops"]),guest("b",["coffee"])] )).toBe(0.5));
+ it("repeat rate excludes guests without a visit",()=>expect(repeatPurchaseRate([guest("a",["coffee","coffee"]),guest("b",["coffee"]),guest("c",[])])).toBe(0.5));
+ it("retention counts returns in 30 days among mature guests",()=>expect(retentionWithin([guest("a",["coffee","coffee"]),guest("b",["coffee","coffee"],["2026-09-01","2026-10-15"]),guest("c",["coffee"],["2026-10-25"])],30,ref)).toBe(0.5));
+ it("retention excludes same-day and future visits",()=>expect(retentionWithin([guest("a",["coffee","coffee"],["2026-09-01","2026-09-01"]),guest("b",["coffee","coffee"],["2026-09-01","2026-11-10"])],30,ref)).toBe(0));
+ it("cross-sell denominator is the entry cohort",()=>{const r=crossSell([guest("a",["coffee","workshops"]),guest("b",["coffee"]),guest("c",["events","workshops"])],"coffee",["coffee","workshops","events"]);expect(r.base).toBe(2);expect(r.targets[0]).toEqual({to:"workshops",count:1,share:0.5})});
+ it("audience excludes missing consent and already known target",()=>{const a=guest("a",["coffee"]);const b={...guest("b",["coffee"]),consent:false};const c=guest("c",["coffee","workshops"]);expect(campaignAudience([a,b,c],{segment:"all",fromDirection:"coffee",targetDirection:"workshops"},ref).map(c=>c.id)).toEqual(["a"])});
+ it("risk begins after 60 days, not at 60",()=>{expect(segmentOf(guest("a",["coffee"],["2026-09-02"]),ref)).toBe("single");expect(segmentOf(guest("b",["coffee"],["2026-09-01"]),ref)).toBe("at-risk")});
+ it("new guests include day 30",()=>expect(segmentOf({...guest("a",[]),joined:"2026-10-02"},ref)).toBe("new"));
+ it("campaign bonus accepts 0 and 500 but not 501 or NaN",()=>{const c={name:"Тест",message:"Демонстрационное приглашение",channels:["circle" as const],fromDirection:"coffee" as const,targetDirection:"workshops" as const};expect(validateCampaign({...c,bonusPoints:0})).toBeNull();expect(validateCampaign({...c,bonusPoints:500})).toBeNull();expect(validateCampaign({...c,bonusPoints:501})).not.toBeNull();expect(validateCampaign({...c,bonusPoints:NaN})).not.toBeNull()});
+ it("requires different target and at least one channel",()=>{const c={name:"Тест",message:"Демонстрационное приглашение",channels:["circle" as const],fromDirection:"coffee" as const,targetDirection:"coffee" as const,bonusPoints:0};expect(validateCampaign(c)).not.toBeNull();expect(validateCampaign({...c,targetDirection:"workshops",channels:[]})).not.toBeNull()});
+ it("recommendation audience matches campaign audience",()=>{const base=[guest("a",["coffee"]),guest("b",["coffee","workshops"]),guest("c",["events"],["2026-08-01"])];for(const r of recommendations(base,demoDirections,ref))expect(r.audience).toBe(campaignAudience(base,r,ref).length)});
+ it("monthly activity excludes visits later than reference",()=>expect(monthlySeries([guest("a",["coffee"],["2026-11-10"])],ref).at(-1)?.active).toBe(0));
+});

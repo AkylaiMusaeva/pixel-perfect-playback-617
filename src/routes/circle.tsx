@@ -24,6 +24,8 @@ export const Route = createFileRoute("/circle")({
       },
       { property: "og:title", content: "PARMESUN Circle — единая программа лояльности" },
       { property: "og:description", content: "Баллы во всех направлениях PARMESUN, награды и привилегии трёх уровней." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: ({ context }) =>

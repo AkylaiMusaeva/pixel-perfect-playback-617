@@ -29,6 +29,8 @@ export const Route = createFileRoute("/dashboard")({
       },
       { property: "og:title", content: "Личный кабинет гостя — PARMESUN ONE" },
       { property: "og:description", content: "Демо-кабинет: баллы, история, предложения и путь гостя в экосистеме." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),

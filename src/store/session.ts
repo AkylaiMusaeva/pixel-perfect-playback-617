@@ -90,7 +90,8 @@ export const session = {
   getServer: () => initial,
 
   addVisit(direction: DirectionSlug, title?: string) {
-    const d = demoDirections.find((x) => x.slug === direction)!;
+    const d = demoDirections.find((x) => x.slug === direction);
+    if (!d) return 0;
     const pts = pointsForVisit(d.pointsPerVisit, tierForPoints(state.earned, demoTiers));
     set(withEarned(pts, interaction("visit", direction, title ?? `Визит: ${d.titleRu}`, pts)));
     return pts;

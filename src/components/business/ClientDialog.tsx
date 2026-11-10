@@ -4,6 +4,8 @@ import { DemoBadge } from "@/components/brand/DemoBadge";
 import { directionPath } from "@/lib/journey";
 import { tierForPoints } from "@/lib/loyalty";
 import { formatDateYear, formatNumber } from "@/lib/format";
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
 export function ClientDialog({ client, onClose, directions, tiers }: { client: ClientRecord | null; onClose: () => void; directions: Direction[]; tiers: LoyaltyTier[] }) {
   const nameOf = (slug: string) => directions.find(d => d.slug === slug)?.titleRu ?? slug;
@@ -15,6 +17,7 @@ export function ClientDialog({ client, onClose, directions, tiers }: { client: C
           <DialogTitle className="mt-3 font-display text-4xl">{client.name}</DialogTitle>
           <DialogDescription>{client.city} · с {formatDateYear(client.joined)} · {client.id}</DialogDescription>
         </DialogHeader>
+        <Button asChild variant="outline"><Link to="/business/clients/$id" params={{ id: client.id }} onClick={onClose}>Открыть профиль 360</Link></Button>
         <div className="grid grid-cols-2 gap-4 border-y py-5">
           <div><p className="text-xs text-muted-foreground">Уровень</p><p className="mt-1 font-display text-3xl">{tierForPoints(client.earned, tiers).name}</p></div>
           <div><p className="text-xs text-muted-foreground">Баланс</p><p className="mt-1 font-display text-3xl">{formatNumber(client.points)} <span className="text-sm">баллов</span></p></div>

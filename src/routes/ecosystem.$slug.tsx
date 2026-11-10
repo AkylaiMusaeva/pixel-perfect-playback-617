@@ -26,6 +26,8 @@ export const Route = createFileRoute("/ecosystem/$slug")({
           { name: "description", content: loaderData.description },
           { property: "og:title", content: `${loaderData.title} · ${loaderData.titleRu} — PARMESUN` },
           { property: "og:description", content: loaderData.description },
+          { property: "og:type", content: "website" },
+          { name: "twitter:card", content: "summary_large_image" },
         ]
       : [{ title: "Направление недоступно — PARMESUN ONE" }, { name: "robots", content: "noindex" }],
   }),
